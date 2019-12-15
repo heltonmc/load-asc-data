@@ -10,9 +10,9 @@ function refl_DT(t,β)
     replace!(Rt, NaN => 0)
     m = findmax(Rt)
     Rt = Rt./m[1]
-    Rt = Rt[m[2]-5:end]
-    del = length(t)-length(Rt)
-    Rt = [Rt; zeros(del)]
+    #Rt = Rt[m[2]-5:end]
+    #del = length(t)-length(Rt)
+    #Rt = [Rt; zeros(del)]
     #Rt = Rt[end:-1:1,end:-1:1]
 
 end
