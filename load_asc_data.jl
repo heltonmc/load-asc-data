@@ -39,3 +39,17 @@ function loadData1(filename)
     inds = counts .> 10*noise
     (time = time[inds], counts = counts[inds])
 end
+
+function convolveTR_IRF(TR,IRF)
+
+    convolved = conv(IRF.counts,TR.counts)
+    convolved = convolved./maximum(convolved)
+    #find new time vector
+    n = collect(1:length(TR.time)-1)
+    tbin = zeros(length(TR.time))
+    for a in n
+       tbin[a] = TR.time[a+1]-TR.time[a]
+    end
+    tavg = mean(tbin[1:end-1])
+    (time = collect(0:1:length(convolved)-1).*tavg, counts = convolved)
+end
