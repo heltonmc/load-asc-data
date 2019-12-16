@@ -37,7 +37,7 @@ function loadData1(filename)
     noise = counts[ind]
     counts = counts .- noise
     inds = counts .> 10*noise
-    (time = time[inds], counts = counts[inds])
+    (time = (time[inds].-time[maxindex]), counts = counts[inds])
 end
 
 using DSP
