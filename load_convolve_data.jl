@@ -58,3 +58,11 @@ function convolveTR_IRF(TR,IRF)
     (time = collect(0:1:length(convolved)-1).*tavg, counts = convolved)
 
 end
+
+function conv_DT_IRF(t,β)
+    Rt = (time = t, counts = refl_DT1(t,β))
+    convDT = convolveTR_IRF(Rt,IRF)
+    ~,maxindex = findmax(convDT.counts)
+    timefit = convDT.time .- convDT.time[maxindex]
+    convDT.counts[maxindex-maxin:maxindex+(length(DTOF1.counts)-maxin-1)]
+end
