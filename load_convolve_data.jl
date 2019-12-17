@@ -1,4 +1,6 @@
 using DelimitedFiles
+using DSP
+using Statistics
 
 function loadData(filename)
     data_array = readdlm(filename,skipstart=10)
@@ -36,19 +38,17 @@ function loadData1(filename)
 
     noise = counts[ind]
     counts = counts .- noise
-    inds = counts .> 10*noise
+    inds = counts .> 20*noise
     (time = (time[inds].-time[maxindex]), counts = counts[inds])
 end
 
-using DSP
-using Statistics
 
 function convolveTR_IRF(TR,IRF)
 
     convolved = conv(IRF.counts,TR.counts)
     convolved = convolved./maximum(convolved)
-    #find new time vector
 
+    #find new time vector
     n = collect(1:length(TR.time)-1)
     tbin = zeros(length(TR.time))
     for a in n
@@ -60,9 +60,10 @@ function convolveTR_IRF(TR,IRF)
 end
 
 function conv_DT_IRF(t,β)
-    Rt = (time = t, counts = refl_DT1(t,β))
+    ρ=1
+    Rt = (time = t, counts = refl_DT1(t,β,ρ))
     convDT = convolveTR_IRF(Rt,IRF)
     ~,maxindex = findmax(convDT.counts)
     timefit = convDT.time .- convDT.time[maxindex]
-    convDT.counts[maxindex-maxin:maxindex+(length(DTOF1.counts)-maxin-1)]
+    convDT.counts[maxindex-maxin:maxindex+(length(DTOF.counts)-maxin-1)]
 end

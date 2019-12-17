@@ -1,25 +1,38 @@
 include("load_convolve_data.jl")
 include("DE-infinite-TR.jl")
-
-IRF = loadData("/Users/michaelhelton/Documents/load-asc-data/IRF_10mm_SDS_750nm.asc")
-DTOF = loadData("/Users/michaelhelton/Documents/load-asc-data/IL5_10mm_SDS_750nm_c1.asc")
-DTOF1 = loadData1("/Users/michaelhelton/Documents/load-asc-data/IL5_10mm_SDS_750nm_20ml.asc")
-DTOF2 =loadData1("/Users/michaelhelton/Documents/load-asc-data/IL5_10mm_SDS_750nm_20ml.asc")
-maxval,maxin = findmax(DTOF1.counts)
-
 using LsqFit
-function fitDTOF(DTOF1)
+using Plots
+
+IRF_filename = "/Users/michaelhelton/Documents/Fitting TRS/IRF_10mm_SDS_750nm.asc"
+DTOF_filename = "/Users/michaelhelton/Documents/Fitting TRS/IL5_10mm_SDS_750nm_20ml.asc"
+IRF = loadData(IRF_filename)
+DTOF = loadData1(DTOF_filename)
+maxval,maxin = findmax(DTOF.counts)
+
+
+function fitDTOF(DTOF,IRF)
+
+    function conv_DT_IRF(t,β)
+        ρ=1
+        Rt = (time = t, counts = refl_DT1(t,β,ρ))
+        convDT = convolveTR_IRF(Rt,IRF)
+        ~,maxindex = findmax(convDT.counts)
+        timefit = convDT.time .- convDT.time[maxindex]
+        convDT.counts[maxindex-maxin:maxindex+(length(DTOF.counts)-maxin-1)]
+    end
+
     lb = [0.001, 3]
     ub = [0.5, 50]
-    w  = Vector(1:1:length(DTOF1.counts)).^4
-    β0 = [0.2, 35]
-    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF1.time)], DTOF1.counts./maximum(DTOF1.counts),w,β0,lower = lb,upper = ub)
+    w  = Vector(1:1:length(DTOF.counts)).^2
+    β0 = [0.2, 10]
+    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], DTOF.counts./maximum(DTOF.counts),w,β0,lower = lb,upper = ub)
 end
 
-xfit = IRF.time[1:length(DTOF1.time)]
+fit = fitDTOF(DTOF,IRF)
+xfit = IRF.time[1:length(DTOF.time)]
 yfit = conv_DT_IRF(xfit,fit.param)
 
-scatter(xfit,DTOF1.counts./maximum(DTOF1.counts), color="black",yaxis =:log,label = "Expt",markersize=3,alpha=0.8)
+scatter(xfit,DTOF.counts./maximum(DTOF.counts), color="black",yaxis =:log,label = "Expt",markersize=3,alpha=0.8)
 plot!(xfit,yfit, color="red", linewidth=3, label = "DT-fit",alpha = 0.8)
 xlabel!("time (ns)")
 ylabel!("Reflectance [counts]")
