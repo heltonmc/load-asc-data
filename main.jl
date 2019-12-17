@@ -21,10 +21,10 @@ function fitDTOF(DTOF,IRF)
         convDT.counts[maxindex-maxin:maxindex+(length(DTOF.counts)-maxin-1)]
     end
 
-    lb = [0.001, 3]
+    lb = [0.001, 1]
     ub = [0.5, 50]
     w  = Vector(1:1:length(DTOF.counts)).^2
-    β0 = [0.2, 10]
+    β0 = [0.2, 15]
     fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], DTOF.counts./maximum(DTOF.counts),w,β0,lower = lb,upper = ub)
 end
 
