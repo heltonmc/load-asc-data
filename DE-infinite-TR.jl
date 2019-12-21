@@ -10,10 +10,6 @@ function refl_DT(t,β)
     replace!(Rt, NaN => 0)
     m = findmax(Rt)
     Rt = Rt./m[1]
-    #Rt = Rt[m[2]-5:end]
-    #del = length(t)-length(Rt)
-    #Rt = [Rt; zeros(del)]
-    #Rt = Rt[end:-1:1,end:-1:1]
 
 end
 
@@ -44,10 +40,10 @@ function refl_DT1(t,β,ρ)
 	v = 29.9792345/nmed # speed of light in medium
 
 	Rt1 = @. v*exp(-μa*v*t)
-	Rt1 = @. Rt1/((4*pi*D*v*t)^1.5)
+	Rt1 = @. Rt1/((4*π*D*v*t)^1.5)
 	Rt1 = @. Rt1*(exp(-(z0^2 + ρ^2)/(4*D*v*t)) - exp(-((2*zb + z0)^2 + ρ^2)/(4*D*v*t)))
 
-	Rt2 = @. 3*exp(-μa*v*t)/(2*((4*pi*D*v)^1.5)*(t^2.5))
+	Rt2 = @. 3*exp(-μa*v*t)/(2*((4*π*D*v)^1.5)*(t^2.5))
 	Rt2 = @. Rt2*(z0*exp(-((z0^2 + ρ^2)/(4*D*v*t))) + (2*zb + z0)*exp(-((2*zb+z0)^2 + ρ^2)/(4*D*v*t)))
 
 	Rt = @. abs(Rt1)+abs(Rt2)
