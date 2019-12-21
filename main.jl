@@ -3,8 +3,8 @@ include("DE-infinite-TR.jl")
 using LsqFit
 using Plots
 
-IRF_filename = "/Users/michaelhelton/Documents/load-asc-data/IRF_10mm_SDS_750nm.asc"
-DTOF_filename = "/Users/michaelhelton/Documents/load-asc-data/IL5_10mm_SDS_750nm_20ml.asc"
+IRF_filename = "IRF_10mm_SDS_750nm.asc"
+DTOF_filename = "IL5_10mm_SDS_750nm_20ml.asc"
 IRF = loadData(IRF_filename)
 DTOF = loadData1(DTOF_filename)
 
