@@ -1,3 +1,11 @@
+#=Packages needed
+LsqFit
+Plots
+DelimitedFiles
+DSP
+Statistics
+=#
+
 include("load_convolve_data.jl")
 include("DE-infinite-TR.jl")
 using LsqFit
