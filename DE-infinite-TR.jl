@@ -1,11 +1,10 @@
-function refl_DT(t,β)
+function refl_DT(t,β,ρ)
 
 	nmed = 1.35
 	ndet = 1.45
 	μa = β[1]
     μsp = β[2]
     n = 1.35
-    ρ = 1
     c = 29.9792458 # Speed of light cm/ns
     v = c/n # Speed of light in medium
 	D = 1/(3*(μa + μsp)) # Diffusion Coefficient
@@ -35,7 +34,7 @@ function refl_DT(t,β)
     Rt = Rt./m[1]
 end
 
-		
+
 
 function refl_DT1(t,β,ρ)
 
