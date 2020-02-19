@@ -34,7 +34,7 @@ function fitDTOF(DTOF,IRF)
     ub = [0.5, 80]
     w  = Vector(1:1:length(DTOF.counts)).^1
     β0 = [0.3, 40]
-    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], log.(DTOF.counts./maximum(DTOF.counts)),β0,lower = lb,upper = ub)
+    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], log.(DTOF.counts./maximum(DTOF.counts)),w,β0,lower = lb,upper = ub)
 end
 
 maxval,maxin = findmax(DTOF.counts)
