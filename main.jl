@@ -34,7 +34,7 @@ function fitDTOF(DTOF,IRF)
     ub = [0.5, 80]
     w  = Vector(1:1:length(DTOF.counts)).^1
     β0 = [0.3, 40]
-    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], log.(DTOF.counts./maximum(DTOF.counts)),w,β0,lower = lb,upper = ub)
+    fit = curve_fit(conv_DT_IRF, IRF.time[1:length(DTOF.time)], log.(DTOF.counts./maximum(DTOF.counts)),β0,lower = lb,upper = ub)
 end
 
 maxval,maxin = findmax(DTOF.counts)
@@ -47,5 +47,6 @@ plot!(xfit,yfit, color="red", linewidth=3, label = "DT-fit",alpha = 0.8)
 xlabel!("time (ns)")
 ylabel!("Reflectance [counts]")
 title!("\\mu_{a} = $(round(fit.param[1],digits=4)) cm^{-1}, \\mu_{s}' = $(round(fit.param[2],digits=3)) cm^{-1}")
+plot!(ytickfontsize=10,xtickfontsize=10,margin=5Plots.mm)
 #savefig("fit_plot.png")
 #savefig("fit_plot.pdf")
